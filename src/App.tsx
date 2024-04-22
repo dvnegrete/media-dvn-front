@@ -1,21 +1,19 @@
+import { BrowserRouter } from 'react-router-dom';
 import './App.css'
-import { Login } from './pages/Login'
-import { Register } from './pages/Register'
-import { FormCategory } from './components/FormCategory';
-import { Dashboard } from './pages/Dashboard';
-import { Content } from './pages/Content';
+import { AppRoute } from './router/AppRoute';
+import { SideBar } from './components/SideBar';
+
 
 function App() {
-
+  localStorage.setItem('username', 'admin');
   return (
+    <BrowserRouter>
+      <SideBar />
+      <main className="flex justify-center content-center bg-gray-50 dark:bg-gray-900 p-4 sm:ml-64">
+        <AppRoute />
+      </main>
+    </BrowserRouter>
 
-    <main className="min-h-screen flex justify-center content-center bg-gray-50 dark:bg-gray-900">
-      {/* <Login/> */}
-      {/* <Register /> */}
-      {/* <FormCategory/> */}
-      <Content/>
-
-    </main>
   )
 }
 

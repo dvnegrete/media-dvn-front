@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export const Login = () => {
     return (
         <section className="bg-gray-50 dark:bg-gray-900">
@@ -11,7 +13,7 @@ export const Login = () => {
                         <form className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu email</label>
-                                <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail@mail.com" required="" />
+                                <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail@mail.com" required />
                             </div>
 
                             <div className="flex items-center justify-between">
@@ -28,7 +30,7 @@ export const Login = () => {
                         </form>
 
                         <div className="pt-8">
-                            <p>¿No tienes cuenta? <span className="cursor-pointer underline font-bold">Registrarme</span></p>
+                            <p>¿No tienes cuenta? <span className="cursor-pointer underline font-bold"><Link to="/sign_up">Registrarme</Link></span></p>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
 import { ListFilesAllowed } from "../../shared/fileCategories";
-import { ListTypeAllowed } from "../ListTypeAllowed";
-import { CustomInput } from "../CustomInput";
+import { ListTypeAllowed } from "../../components/ListTypeAllowed";
+import { CustomInput } from "../../components/CustomInput";
+import { CategoryInterface } from "../../shared/interfaces";
+import { postCategory } from "../../service/api";
 
 export const FormCategory = () => {
 
@@ -52,26 +54,17 @@ export const FormCategory = () => {
             && fileAllowed.length > 0;
     }
 
-    const sendCategory = () => {
+    const sendCategory = async () => {
         if (validateData()) {
-            const sendObj = {
+            const sendObj:CategoryInterface = {
                 name: inputName,
                 description: inputDescription,
                 image: inputUrl,
                 allowedFileTypes: fileAllowed
             };
-            fetch('http://localhost:3000/api/category', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'username': 'admin'
-                },
-                body: JSON.stringify(sendObj)
-            })
-                .then(res => res.json())
-                .then((data) => {
-                    console.log(data)
-                });
+            const res = await postCategory(sendObj);
+            console.log(res);
+            
         } else{
             alert("Error. Revisa que todos los campos sean validos y se encuentren llenados")
         }
