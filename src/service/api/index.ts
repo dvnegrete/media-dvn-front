@@ -104,6 +104,15 @@ export const postTheme = async (data: ThemeInterface) => {
     }
 }
 
+export const getTheme = async (data:string) => {
+    try {
+        const res = await axiosConf.get(`${API_BASE_URL}/themes/${data}`);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "getThemeAll");
+    }
+}
+
 export const getThemeAll = async () => {
     try {
         const res = await axiosConf.get(`${API_BASE_URL}/themes/all`);

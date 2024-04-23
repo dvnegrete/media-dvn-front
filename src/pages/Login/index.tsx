@@ -1,9 +1,11 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import { getUserForEmail } from "../../service/api";
+import { MediaDVNContext } from "../../Context";
 
 export const Login = () => {
     const navigate = useNavigate();
+    const context = useContext(MediaDVNContext);
     const refEmail = useRef<HTMLInputElement>(null);
     const [message, setMessage] = useState("");
     const [showMessage, setShowMessage] = useState(false);
@@ -13,9 +15,11 @@ export const Login = () => {
         if (refEmail.current) {
             const email = refEmail.current.value.trim();
             const res = await getUserForEmail(email);
-            console.log(res);
             if (res._id) {
                 localStorage.setItem("user", res._id);
+                context?.setPermissions(res.role);
+                context?.setLogin(true);
+                context?.setUsername(res.user);
                 navigate("/dashboard");
             } else if (res.msg ==='Not found'){
                 setMessage(res.msg);

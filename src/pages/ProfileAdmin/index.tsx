@@ -64,11 +64,11 @@ export const ProfileAdmin = () => {
                             <td>{user.username}</td>
                             <td>{user.email}</td>
                             {
-                                Object.keys(ROLES)[0] === user.role
-                                    ? <td>{ROLES.ADMIN_ROLE}</td>
-                                    : Object.keys(ROLES)[1] === user.role
-                                        ? <td>{ROLES.CREATOR_ROLE}</td>
-                                        : <td>{ROLES.READ_ROLE}</td>
+                                ROLES.Administrator === user.role
+                                    ? <td>Administrador</td>
+                                    : ROLES.Creator === user.role
+                                        ? <td>Creador</td>
+                                        : <td>Lector</td>
                             }
                             <td className="flex justify-center"><IconEdit edit={() => handlerEditUser(user)} /></td>
                             <td className="px-6"><IconDelete key={user._id} remove={() => handlerRemoveUser(user)} /></td>

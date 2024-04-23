@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { UpdateRegisterUser } from "../../shared/interfaces";
 import { putUsers } from "../../service/api";
+import { ROLES } from "../../shared/enum/Roles";
 
 export const UpdateRegister = ({ user, close }: UpdateRegisterUser) => {
     const refUsername = useRef<HTMLInputElement>(null);
@@ -92,9 +93,9 @@ export const UpdateRegister = ({ user, close }: UpdateRegisterUser) => {
                                 <select onChange={handlerSelectChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     id="category-list">
-                                    <option value="READ_ROLE" defaultChecked>Lector</option>
-                                    <option value="CREATOR_ROLE">Creador</option>
-                                    <option value="ADMIN_ROLE">Administrador</option>
+                                    <option value={ROLES.Reader} defaultChecked>Lector</option>
+                                    <option value={ROLES.Creator}>Creador</option>
+                                    <option value={ROLES.Administrator}>Administrador</option>
                                 </select>
                             </div>
 

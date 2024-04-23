@@ -1,9 +1,11 @@
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { postUsers } from "../../service/api";
 import { Link, useNavigate } from "react-router-dom";
+import { MediaDVNContext } from "../../Context";
 
 export const Register = () => {
     const navigate = useNavigate();
+    const context = useContext(MediaDVNContext);
     const refUsername = useRef<HTMLInputElement>(null);
     const refEmail = useRef<HTMLInputElement>(null);
 
@@ -37,6 +39,9 @@ export const Register = () => {
             validationBackend(res.msg);
             if (res._id) {
                 localStorage.setItem("user", res._id);
+                context?.setPermissions(res.role);
+                context?.setLogin(true);
+                context?.setUsername(res.user);
                 navigate("/dashboard");
             }
         }
