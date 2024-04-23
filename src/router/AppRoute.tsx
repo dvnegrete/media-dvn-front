@@ -3,9 +3,10 @@ import { Content } from "../pages/Content";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { FormCategory } from "../pages/FormCategory";
-import { FormNewTheme } from "../pages/FormNewTheme";
 import { Dashboard } from "../pages/Dashboard";
 import { ProfileAdmin } from "../pages/ProfileAdmin";
+import { AdminThemes } from "../pages/AdminThemes";
+import { FormNewContent } from "../components/FormNewContent";
 
 export const AppRoute = () => {
   const router = useRoutes([
@@ -14,10 +15,10 @@ export const AppRoute = () => {
     { path: "/login", element: <Login /> },
     { path: "/sign_up", element: <Register /> },
     { path: "/nueva-categoria", element: <FormCategory /> },
-    { path: "/nueva-tematica", element: <FormNewTheme /> },
+    { path: "/tematicas", element: <AdminThemes /> },
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/administracion", element: <ProfileAdmin /> },
-    // { path: "/sign_up", element: <Register /> },
+    { path: "/nuevo-contenido", element: <FormNewContent /> },
 
   ]);
   return router;

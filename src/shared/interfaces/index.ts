@@ -3,3 +3,5 @@ export * from './ListTypeAllowedProp.interface';
 export * from './CustomInputProp.interface';
 export * from './Users.interface';
 export * from './IconRemove.interface';
+export * from './IconEdit.interface';
+export * from './UpdateRegisterUser.interface';

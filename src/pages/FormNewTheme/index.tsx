@@ -4,13 +4,32 @@ import { ListTypeAllowed } from "../../components/ListTypeAllowed";
 import { getCategory, postTheme } from "../../service/api";
 import { CategoryInterface } from "../../shared/interfaces";
 import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
+import { useNavigate } from "react-router-dom";
 
 export const FormNewTheme = () => {
+
+    const navigate = useNavigate();
 
     const [listCategories, setListCategories] = useState<CategoryInterface[]>([]);
     const [inputName, setInputName] = useState<string>("");
     const [inputDescription, setInputDescription] = useState<string>("");
     const [categoryAllowed, setCategoryAllowed] = useState<string[]>([]);
+
+    const [message, setMessage] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
+
+    const validationBackend = (res: { msg: string }) => {
+        setShowMessage(true);
+        if (res.msg && res.msg === "the theme already exists") {
+            setMessage("Esta temática ya existe");
+        }
+        else if (res.msg && res.msg.includes("not found")) {
+            setMessage("No se encontraron categorias validas");
+        } else {
+            setShowMessage(false);
+            navigate('/');
+        }
+    }
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -51,7 +70,7 @@ export const FormNewTheme = () => {
                 categories: categoryAllowed
             };
             const res = await postTheme(sendObj);
-            console.log(res);
+            validationBackend(res);
         } else {
             alert("Error. Revisa que todos los campos sean validos y se encuentren llenados")
         }
@@ -95,6 +114,12 @@ export const FormNewTheme = () => {
             </div>
 
             <ListTypeAllowed fileAllowed={categoryAllowed} removeType={removeType} />
+
+            {
+                showMessage ?
+                    <p className="text-yellow-300">{message}</p>
+                    : <></>
+            }
 
             <button className="mt-8 cursor-pointer"
                 onClick={sendCategory}

@@ -3,11 +3,15 @@ import { deleteUser, getUsers } from "../../service/api";
 import { Users } from "../../shared/interfaces/Users.interface";
 import { IconEdit } from "../../components/Icons/IconEdit";
 import { IconDelete } from "../../components/Icons/IconDelete";
+import { UpdateRegister } from "../../components/UpdateRegister";
+import { ROLES } from "../../shared/enum/Roles";
 
 export const ProfileAdmin = () => {
 
     const [users, setUsers] = useState<Users[]>([]);
     const [deletedUserState, setDeletedUserState] = useState<string | null>(null);
+    const [editUserState, setEditUserState] = useState<Users | null>(null);
+    const [isShowEdit, setIsShowEdit] = useState(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -22,6 +26,15 @@ export const ProfileAdmin = () => {
         fetchUsers();
     }, [deletedUserState]);
 
+    const handlerEditUser = (user: Users) => {
+        setEditUserState(user);
+        setIsShowEdit(true)
+    };
+
+    const handlerCloseEdit = () => {
+        setIsShowEdit(false)
+    }
+
     const handlerRemoveUser = async (user: Users) => {
         if (user._id !== undefined) {
             await deleteUser(user._id);
@@ -30,33 +43,47 @@ export const ProfileAdmin = () => {
     }
 
     return (
-        <>
-            <h3>Administración de Usuarios de la Aplicación</h3>
+        <section className="max-w-2xl">
+            <h3 className="text-3xl">Administración de Usuarios de la Aplicación</h3>
 
-            <p>Usuarios registrados</p>
+            <h5 className="text-xl">Usuarios registrados</h5>
 
-            <table>
+            <table className="mt-4 bg-gray-700 rounded">
                 <thead>
                     <tr>
-                        <th>Nombre de Usuario</th>
-                        <th>Correo Electrónico</th>
-                        <th>Permisos</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th className="min-w-44">Nombre de Usuario</th>
+                        <th className="min-w-44">Correo Electrónico</th>
+                        <th className="min-w-36 px-2">Permisos</th>
+                        <th className="min-w-20">Editar</th>
+                        <th className="min-w-20">Eliminar</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-gray-800">
                     {users.map((user) => (
                         <tr key={user._id}>
                             <td>{user.username}</td>
                             <td>{user.email}</td>
-                            <td>{user.role}</td>
-                            <td><IconEdit /></td>
-                            <td><IconDelete key={user._id} remove={() => handlerRemoveUser(user)} /></td>
+                            {
+                                Object.keys(ROLES)[0] === user.role
+                                    ? <td>{ROLES.ADMIN_ROLE}</td>
+                                    : Object.keys(ROLES)[1] === user.role
+                                        ? <td>{ROLES.CREATOR_ROLE}</td>
+                                        : <td>{ROLES.READ_ROLE}</td>
+                            }
+                            <td className="flex justify-center"><IconEdit edit={() => handlerEditUser(user)} /></td>
+                            <td className="px-6"><IconDelete key={user._id} remove={() => handlerRemoveUser(user)} /></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-        </>
+            {
+                isShowEdit ?
+                    <UpdateRegister
+                        user={editUserState}
+                        close={handlerCloseEdit}
+                    />
+                    : <></>
+            }
+        </section>
     )
 }

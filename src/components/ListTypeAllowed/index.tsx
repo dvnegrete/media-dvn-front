@@ -1,5 +1,5 @@
 import { ListTypeAllowedProp } from "../../shared/interfaces";
-import { CheckingIcon } from "../CheckingIcon";
+import { CheckingIcon } from "../Icons/CheckingIcon";
 import { IconDelete } from "../Icons/IconDelete";
 
 export const ListTypeAllowed = ({ fileAllowed, removeType }: ListTypeAllowedProp) => {
