@@ -19,9 +19,12 @@ export const Login = () => {
                 localStorage.setItem("user", res._id);
                 context?.setPermissions(res.role);
                 context?.setLogin(true);
-                context?.setUsername(res.user);
+                context?.setUsername({
+                    userID: res._id,
+                    username: res.username
+                });
                 navigate("/dashboard");
-            } else if (res.msg ==='Not found'){
+            } else if (res.msg === 'Not found') {
                 setMessage(res.msg);
                 setShowMessage(true)
             }
@@ -54,10 +57,10 @@ export const Login = () => {
                         </form>
 
                         {
-                                showMessage ?
-                                    <p className="text-yellow-300">{message}</p>
-                                    : <></>
-                            }
+                            showMessage ?
+                                <p className="text-yellow-300">{message}</p>
+                                : <></>
+                        }
 
                         <div className="pt-8">
                             <p>¿No tienes cuenta? <span className="cursor-pointer underline font-bold"><Link to="/sign_up">Registrarme</Link></span></p>

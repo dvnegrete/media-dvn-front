@@ -7,8 +7,8 @@ export const ListUploadFiles = ({ listUpload, removeType }: ListUploadProp) => {
     const handlerRemoveType = (file: File) => removeType(file);
     return (
         <>
-            <p className="uppercase text-gray-100 dark:text-gray-200 bg-gray-700 rounded">Archivos selecionados:</p>
-            <ul className="flex flex-wrap justify-between text-left text-gray-100 dark:text-gray-200 w-full bg-gray-700 rounded">
+            <p className="uppercase text-gray-100 dark:text-gray-200 bg-gray-700 rounded w-full mt-2">Archivos selecionados:</p>
+            <ul className="flex flex-wrap justify-between text-left text-gray-100 dark:text-gray-200 w-full bg-gray-700 rounded mb-2">
                 {listUpload.map((file, index) => (
                     <li className="flex items-center space-x-3 p-3 my-0 w-fit" key={index}
                     >

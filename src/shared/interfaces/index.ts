@@ -6,3 +6,5 @@ export * from './Users.interface';
 export * from './IconRemove.interface';
 export * from './IconEdit.interface';
 export * from './UpdateRegisterUser.interface';
+export * from './ThematicCard.interface';
+export * from './UserContextSave.interface';

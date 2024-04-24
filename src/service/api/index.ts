@@ -21,6 +21,21 @@ axiosConf.interceptors.request.use(
     }
 );
 
+const axiosContent = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {}
+});
+
+axiosContent.interceptors.request.use(
+    (config) => {
+        config.headers['user'] = localStorage.getItem('user');
+        return config;
+    },
+    (err) => {
+        return Promise.reject(err)
+    }
+);
+
 const catchReponse = (err: unknown, name: string) => {
     if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
@@ -104,7 +119,7 @@ export const postTheme = async (data: ThemeInterface) => {
     }
 }
 
-export const getTheme = async (data:string) => {
+export const getTheme = async (data: string) => {
     try {
         const res = await axiosConf.get(`${API_BASE_URL}/themes/${data}`);
         return res.data;
@@ -119,5 +134,14 @@ export const getThemeAll = async () => {
         return res.data;
     } catch (error) {
         return catchReponse(error, "getThemeAll");
+    }
+}
+
+export const postContent = async (data: unknown) => {
+    try {
+        const res = await axiosContent.postForm(`${API_BASE_URL}/content`, data);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "postContent");
     }
 }

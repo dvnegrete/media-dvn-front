@@ -41,7 +41,10 @@ export const Register = () => {
                 localStorage.setItem("user", res._id);
                 context?.setPermissions(res.role);
                 context?.setLogin(true);
-                context?.setUsername(res.user);
+                context?.setUsername({
+                    userID: res._id,
+                    username: res.username
+                });
                 navigate("/dashboard");
             }
         }
