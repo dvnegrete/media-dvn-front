@@ -6,7 +6,7 @@ import { postContent } from "../../service/api";
 import { CustomInput } from "../CustomInput";
 import { ListUploadFiles } from "../ListUploadFiles";
 import { MediaDVNContext } from "../../Context";
-import { Skeleton } from "../Skeleton";
+import { SkeletonCard } from "../SkeletonCard";
 
 export const FormNewContent = () => {
 
@@ -128,7 +128,7 @@ export const FormNewContent = () => {
                                     </ul>
                                 ))
                                 :
-                                <Skeleton />
+                                <SkeletonCard />
                         }
                     </div>
                 </div>

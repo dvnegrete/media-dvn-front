@@ -1,40 +1,28 @@
 import { useContext, useEffect, useState } from "react";
-import { getContentAll, getContentID } from "../../service/api";
-import { MediaDVNContext } from "../../Context";
+import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../shared/enum/Roles";
-// import { useNavigate } from "react-router-dom";
-// import { CardThematic } from "../../components/CardThematic";
 import { ContentInterface } from "../../shared/interfaces";
+
+import { MediaDVNContext } from "../../Context";
+import { ContentContext } from "../../Context/ContentContext";
+import { getContentAll, getContentID } from "../../service/api";
+
 import { CardContent } from "../../components/CardContent";
-import { Content } from "../Content";
+import { SkeletonCard } from "../../components/SkeletonCard";
 
 export const Dashboard = () => {
-    const context = useContext(MediaDVNContext);
-    //const navigate = useNavigate();
-    // const [categories, setCategories] = useState<CategoryInterface[] | null>(null);
-    //const [themes, setThemes] = useState<ThemeInterface[]>([]);
+    const contextGlobal = useContext(MediaDVNContext);
+    const contextContent = useContext(ContentContext);
+    const navigate = useNavigate();
     const [contents, setContents] = useState<ContentInterface[]>([]);
-    const [contentSingleID, setContentSingleID] = useState("");
-    const [showContent, setShowContent] = useState<ContentInterface | null>(null);
-    const [isShowCardContent, setIsShowCardContent] = useState(true);
-
-    // useEffect(() => {
-    //     const fetchThemes = async () => {
-    //         try {
-    //             const ThemeData = await getThemeAll();
-    //             setThemes(ThemeData);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     fetchThemes();
-    // }, []);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchContents = async () => {
             try {
                 const contentsData = await getContentAll();
                 setContents(contentsData);
+                setLoading(false);
             } catch (error) {
                 console.error(error);
             }
@@ -42,93 +30,45 @@ export const Dashboard = () => {
         fetchContents();
     }, []);
 
-    useEffect(() => {
-        const ContentID = async () => {
-            try {
-                const content = await getContentID(contentSingleID);
-                setShowContent(content);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        ContentID();
-    }, [contentSingleID]);
-
-    // const handlerToCreate = (id: string) => {
-    //     context?.setForCreateThematicID(id);
-    //     navigate("/nuevo-contenido");
-    // }
-    const handlerToSee = (id: string) => {
-        console.log(id);
-        
-        setContentSingleID(id);
-        setIsShowCardContent(false);
+    const handlerToSee = async (id: string) => {
+        setLoading(true);
+        if (contextGlobal?.login) {
+            const selectedContent = await getContentID(id);
+            contextContent?.setSelectedContent(selectedContent);
+        } else {
+            const [selectedContent] = contents.filter(content => content._id === id);
+            contextContent?.setSelectedContent(selectedContent);
+        }
+        setLoading(false);
+        navigate("/contenido");
     }
 
-    const administratorRole = () => context?.permissions === ROLES.Administrator;
-    const creatorRole = () => context?.permissions === ROLES.Creator;
-    const lectorRole = () => context?.permissions === ROLES.Reader;
+    const administratorRole = () => contextGlobal?.permissions === ROLES.Administrator;
+    const creatorRole = () => contextGlobal?.permissions === ROLES.Creator;
+    const lectorRole = () => contextGlobal?.permissions === ROLES.Reader;
 
     return (
         <section className="flex flex-wrap justify-evenly content-evenly" >
             <h3>Contenidos Disponibles:</h3>
             <div>Busca un contenido:</div>
-
-
-            <div className="flex flex-wrap p-5 mb-4">
-                {
-                    contents.map(content => (
-                        <CardContent
-                            _id={content._id}
-                            key={content._id}
-                            title={content.title}
-                            goToSee={handlerToSee}
-                        />
-                    ))
-                }
-            </div>
-
+            {/* Implemetar componente buscador */}
             {
-                !isShowCardContent ?
-                    <Content
-                        _id={showContent?._id || ""}
-                        key={showContent?._id}
-                        title={showContent?.title || ""}
-                        content={showContent?.content || ""}
-                        media={showContent?.media}
-                        userID={showContent?.userID || null}
-                    />
-                    : <></>
-
+                !loading ?
+                    <div className="flex flex-wrap p-5 mb-4">
+                        {
+                            contents.map(content => (
+                                <CardContent
+                                    _id={content._id}
+                                    key={content._id}
+                                    title={content.title}
+                                    goToSee={handlerToSee}
+                                />
+                            ))
+                        }
+                    </div>
+                    :
+                    <SkeletonCard />
             }
-            {/* {
-                // <CardThematic
-                //     _id={theme._id || theme.name}
-                //     key={theme._id}
-                //     name={theme.description}
-                //     description={theme.description}
-                //     isCreator={administratorRole() || creatorRole()}
-                //     goToCreate={handlerToCreate}
-                //     goToSee={handlerToSee}
-                // />
-
-
-                categories?.map((category) => {
-                    return (
-                        <CardCategories
-                            _id={category._id}
-                            key={category._id}
-                            name={category.name}
-                            description={category.description}
-                            image={category.image}
-                            allowedFileTypes={category.allowedFileTypes}
-                            isCreator={administratorRole() || creatorRole()}
-                            goToCreate={ handlerToCreate }
-                            goToSee={ handlerToSee }
-                        />
-                    )
-                })
-            } */}
             {
                 administratorRole() ?
                     <p>Permisos de Admin</p> : <></>

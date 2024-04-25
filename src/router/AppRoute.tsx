@@ -19,6 +19,7 @@ export const AppRoute = () => {
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/administracion", element: <ProfileAdmin /> },
     { path: "/nuevo-contenido", element: <FormNewContent /> },
+    { path: "/contenido", element: <Content/> },
 
   ]);
   return router;

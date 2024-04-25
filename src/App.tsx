@@ -4,6 +4,7 @@ import { AppRoute } from './router/AppRoute';
 import { SideBar } from './components/SideBar';
 import { useContext, useEffect } from 'react';
 import { MediaDVNContext } from './Context';
+import { ContentProvider } from './Context/ContentContext';
 
 
 function App() {
@@ -20,7 +21,9 @@ function App() {
     <BrowserRouter>
       <SideBar />
       <main className="flex justify-center content-center bg-gray-50 dark:bg-gray-900 p-4 sm:ml-64 min-h-screen">
-        <AppRoute />
+        <ContentProvider>
+          <AppRoute />
+        </ContentProvider>
       </main>
     </BrowserRouter>
   )

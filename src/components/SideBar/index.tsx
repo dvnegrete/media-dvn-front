@@ -1,20 +1,16 @@
 import { IconCategory } from "../Icons/IconCategory"
-import { IconDashboard } from "../Icons/IconDashboard"
 import { IconHome } from "../Icons/IconHome"
 import { IconMenu } from "../Icons/IconMenu"
 import { IconTheme } from "../Icons/IconTheme"
 import { IconSignIn } from "../Icons/IconSignIn"
 import { IconSignUp } from "../Icons/IconSignUp"
 import { IconUsers } from "../Icons/IconUsers"
-import { IconContent } from "../Icons/IconContent"
 import { IconReadContent } from "../Icons/IconReadContent"
 import { Link, useNavigate } from "react-router-dom"
 import { IconSignOut } from "../Icons/IconSignOut"
 import { ROLES } from "../../shared/enum/Roles"
 import { useContext } from "react"
 import { MediaDVNContext } from "../../Context"
-
-
 
 export const SideBar = () => {
     const navigate = useNavigate();
@@ -56,8 +52,8 @@ export const SideBar = () => {
                         <li>
                             <Link to="/dashboard"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                <IconDashboard />
-                                <span className="ms-3">Dashboard</span>
+                                <IconReadContent />
+                                <span className="flex-1 ms-3 whitespace-nowrap">Contenidos</span>
                             </Link>
                         </li>
                         {
@@ -107,13 +103,7 @@ export const SideBar = () => {
                         {
                             isLoggedIn() ?
                                 <>
-                                    <li>
-                                        <Link to=""
-                                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                            <IconReadContent />
-                                            <span className="flex-1 ms-3 whitespace-nowrap">Contenidos</span>
-                                        </Link>
-                                    </li>
+
                                     <li>
                                         <div onClick={handlerLogOut}
                                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">

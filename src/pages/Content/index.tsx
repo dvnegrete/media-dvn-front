@@ -1,18 +1,20 @@
-import { ContentInterface } from "../../shared/interfaces"
+import { useContext } from "react";
+import { ContentContext } from "../../Context/ContentContext";
 
-export const Content = ({ title, content, media, userID }: ContentInterface) => {
+export const Content = () => {
+    const contextContent = useContext(ContentContext);
 
     return (
         <>
-            <h3>{title}</h3>
+            <h3>{contextContent?.selectedContent?.title}</h3>
             <div>
-                {content}
+                {contextContent?.selectedContent?.content}
             </div>
 
                 {/* Generar nuevo componente para mostrar el array de "media" */}
             <div>
                 {
-                    media?.map(item => (
+                    contextContent?.selectedContent?.media?.map(item => (
                         <img src={item} />
                     ))
 
@@ -26,7 +28,7 @@ export const Content = ({ title, content, media, userID }: ContentInterface) => 
 
             </div>
 
-            <h5>Creditos: {userID?.username}</h5>
+            <h5>Creditos: {contextContent?.selectedContent?.userID?.username}</h5>
         </>
     )
 }
