@@ -1,20 +1,20 @@
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useState, Dispatch, SetStateAction, FC } from "react"
 import { UserContextSave } from "../shared/interfaces";
 
 type MediaDVNContextType = {
     permissions: string;
-    setPermissions: React.Dispatch<React.SetStateAction<string>>;
+    setPermissions: Dispatch<SetStateAction<string>>;
     login: boolean;
-    setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+    setLogin: Dispatch<SetStateAction<boolean>>;
     username: UserContextSave;
-    setUsername: React.Dispatch<React.SetStateAction<UserContextSave>>;
+    setUsername: Dispatch<SetStateAction<UserContextSave>>;
     createForThematicID: string;
-    setForCreateThematicID: React.Dispatch<React.SetStateAction<string>>;
+    setForCreateThematicID: Dispatch<SetStateAction<string>>;
   };
 
 export const MediaDVNContext = createContext<MediaDVNContextType | undefined>(undefined);
 
-export const MediaDVNProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const MediaDVNProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [permissions, setPermissions] = useState("");
     const [login, setLogin] = useState(false);
     const [username, setUsername] = useState<UserContextSave>({userID:"", username:""});

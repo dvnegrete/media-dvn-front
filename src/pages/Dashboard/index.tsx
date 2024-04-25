@@ -1,46 +1,68 @@
 import { useContext, useEffect, useState } from "react";
-import { CategoryInterface } from "../../shared/interfaces";
-import { CardCategories } from "../../components/CardCategories";
-import { getCategory, getThemeAll } from "../../service/api";
+import { getContentAll, getContentID } from "../../service/api";
 import { MediaDVNContext } from "../../Context";
 import { ROLES } from "../../shared/enum/Roles";
-import { useNavigate } from "react-router-dom";
-import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
-import { CardThematic } from "../../components/CardThematic";
+// import { useNavigate } from "react-router-dom";
+// import { CardThematic } from "../../components/CardThematic";
+import { ContentInterface } from "../../shared/interfaces";
+import { CardContent } from "../../components/CardContent";
+import { Content } from "../Content";
 
 export const Dashboard = () => {
     const context = useContext(MediaDVNContext);
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     // const [categories, setCategories] = useState<CategoryInterface[] | null>(null);
-    const [themes, setThemes] = useState<ThemeInterface[]>([]);
+    //const [themes, setThemes] = useState<ThemeInterface[]>([]);
+    const [contents, setContents] = useState<ContentInterface[]>([]);
+    const [contentSingleID, setContentSingleID] = useState("");
+    const [showContent, setShowContent] = useState<ContentInterface | null>(null);
+    const [isShowCardContent, setIsShowCardContent] = useState(true);
+
+    // useEffect(() => {
+    //     const fetchThemes = async () => {
+    //         try {
+    //             const ThemeData = await getThemeAll();
+    //             setThemes(ThemeData);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     fetchThemes();
+    // }, []);
 
     useEffect(() => {
-        const fetchThemes = async () => {
+        const fetchContents = async () => {
             try {
-                const ThemeData = await getThemeAll();
-                setThemes(ThemeData);
+                const contentsData = await getContentAll();
+                setContents(contentsData);
             } catch (error) {
                 console.error(error);
             }
         };
-        fetchThemes();
+        fetchContents();
     }, []);
 
-    // useEffect(() => {
-    //     const fetchCategories = async () => {
-    //         const resCategory = await getCategory();
-    //         setCategories(resCategory);
-    //     }
-    //     fetchCategories();
-    // }, []);
+    useEffect(() => {
+        const ContentID = async () => {
+            try {
+                const content = await getContentID(contentSingleID);
+                setShowContent(content);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        ContentID();
+    }, [contentSingleID]);
 
-    const handlerToCreate =(id:string)=> {
-        context?.setForCreateThematicID(id);
-        navigate("/nuevo-contenido");
-    }
-    const handlerToSee =(id:string)=>{
-        console.log("SEE", id);
-
+    // const handlerToCreate = (id: string) => {
+    //     context?.setForCreateThematicID(id);
+    //     navigate("/nuevo-contenido");
+    // }
+    const handlerToSee = (id: string) => {
+        console.log(id);
+        
+        setContentSingleID(id);
+        setIsShowCardContent(false);
     }
 
     const administratorRole = () => context?.permissions === ROLES.Administrator;
@@ -49,26 +71,48 @@ export const Dashboard = () => {
 
     return (
         <section className="flex flex-wrap justify-evenly content-evenly" >
-            <h3>Tematicas Disponibles:</h3>
+            <h3>Contenidos Disponibles:</h3>
             <div>Busca un contenido:</div>
 
-            
+
             <div className="flex flex-wrap p-5 mb-4">
                 {
-                    themes.map(theme => (
-                        <CardThematic
-                            _id={theme._id || theme.name}
-                            key={theme._id}
-                            name={theme.description}
-                            description={theme.description}
-                            isCreator={administratorRole() || creatorRole()}
-                            goToCreate={ handlerToCreate }
-                            goToSee={ handlerToSee }
+                    contents.map(content => (
+                        <CardContent
+                            _id={content._id}
+                            key={content._id}
+                            title={content.title}
+                            goToSee={handlerToSee}
                         />
                     ))
                 }
             </div>
+
+            {
+                !isShowCardContent ?
+                    <Content
+                        _id={showContent?._id || ""}
+                        key={showContent?._id}
+                        title={showContent?.title || ""}
+                        content={showContent?.content || ""}
+                        media={showContent?.media}
+                        userID={showContent?.userID || null}
+                    />
+                    : <></>
+
+            }
             {/* {
+                // <CardThematic
+                //     _id={theme._id || theme.name}
+                //     key={theme._id}
+                //     name={theme.description}
+                //     description={theme.description}
+                //     isCreator={administratorRole() || creatorRole()}
+                //     goToCreate={handlerToCreate}
+                //     goToSee={handlerToSee}
+                // />
+
+
                 categories?.map((category) => {
                     return (
                         <CardCategories
@@ -87,13 +131,13 @@ export const Dashboard = () => {
             } */}
             {
                 administratorRole() ?
-                    <p>HOla Admin</p> : <>admin NO</>
+                    <p>Permisos de Admin</p> : <></>
             }
             {
-                creatorRole() ? <p>HOla Creator</p> : <p>creator no</p>
+                creatorRole() ? <p>Permisos de Creator</p> : <></>
             }
             {
-                lectorRole() ? <p>Hola lector</p> : <p>lector no</p>
+                lectorRole() ? <p>Permisos de lector</p> : <></>
             }
         </section>
     )

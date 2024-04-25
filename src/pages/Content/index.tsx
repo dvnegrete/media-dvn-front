@@ -1,13 +1,32 @@
-import { Dashboard } from "../Dashboard"
+import { ContentInterface } from "../../shared/interfaces"
 
-export const Content = () => {
-   
+export const Content = ({ title, content, media, userID }: ContentInterface) => {
+
     return (
-        <main>
-            <h1>Disruptive Studio.</h1>
-            <h2>Prueba Tecnica. Gestion de Contenido Multimedia</h2>
+        <>
+            <h3>{title}</h3>
+            <div>
+                {content}
+            </div>
 
-            <Dashboard/>
-        </main>
+                {/* Generar nuevo componente para mostrar el array de "media" */}
+            <div>
+                {
+                    media?.map(item => (
+                        <img src={item} />
+                    ))
+
+                }
+                {
+                    <video src="" />
+                }
+                {
+                    <a href={"pdf"} download={"nombre de archivo.pdf"}></a>
+                }
+
+            </div>
+
+            <h5>Creditos: {userID?.username}</h5>
+        </>
     )
 }

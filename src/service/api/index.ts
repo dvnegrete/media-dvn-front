@@ -137,6 +137,24 @@ export const getThemeAll = async () => {
     }
 }
 
+export const getContentAll = async () => {
+    try {
+        const res = await axiosContent.get(`${API_BASE_URL}/content`);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "getContentAll");
+    }
+}
+
+export const getContentID = async (id:string) => {
+    try {
+        const res = await axiosContent.get(`${API_BASE_URL}/content/${id}`);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "getContentID");
+    }
+}
+
 export const postContent = async (data: unknown) => {
     try {
         const res = await axiosContent.postForm(`${API_BASE_URL}/content`, data);

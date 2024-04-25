@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
+import { getTheme } from "../../service/api";
+import { postContent } from "../../service/api";
 import { CustomInput } from "../CustomInput";
 import { ListUploadFiles } from "../ListUploadFiles";
 import { MediaDVNContext } from "../../Context";
-import { getTheme } from "../../service/api";
-import { postContent } from "../../service/api";
-import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
 import { Skeleton } from "../Skeleton";
 
 export const FormNewContent = () => {
 
     const context = useContext(MediaDVNContext);
-    const [msgError, setMsgError] = useState(false);
+    const navigate = useNavigate();
+    const [IsErrorMsg, setIsErrorMsg] = useState(false);
+    const [msgError, setmsgError] = useState("");
 
     const [inputTitle, setInputTitle] = useState<string>("");
     const [textArea, setTextArea] = useState<string>("");
@@ -18,8 +21,9 @@ export const FormNewContent = () => {
     const [theme, setTheme] = useState<ThemeInterface | null>(null);
 
 
-    const messageAlert = () => {
-        setMsgError(true);
+    const messageAlert = (msg:string) => {
+        setIsErrorMsg(true);
+        setmsgError(msg)
     }
 
     useEffect(() => {
@@ -35,9 +39,9 @@ export const FormNewContent = () => {
         assignThematic();
     }, []);
 
-    const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => setTextArea(event.target.value);
+    const changeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => setTextArea(event.target.value);
 
-    const addType = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const addType = (event: ChangeEvent<HTMLInputElement>) => {
         const fileList = event.target.files;
         if (fileList) {
             setFilesCharged((state) => [...state, ...Array.from(fileList)])
@@ -66,9 +70,14 @@ export const FormNewContent = () => {
                 formData.append('media', fileWithMeta.file)
             })
             const res = await postContent(formData);
-            console.log(res);
+            if (res._id) {
+                console.log("Inforamción guardada");
+                navigate('/dashboard')
+            } else {
+                messageAlert(res.msg);
+            }
         } else {
-            alert("Error en los permisos. Inicia sesion nuevamente");
+            messageAlert("Error en los permisos. Inicia sesion nuevamente");
         }
     }
 
@@ -127,7 +136,7 @@ export const FormNewContent = () => {
             </div>
 
             {
-                msgError ? <p className="text-red-700 pb-3">El tipo selecionado ya esta agregado </p> : <></>
+                IsErrorMsg ? <p className="text-red-700 pb-3">{msgError} </p> : <></>
             }
 
 
