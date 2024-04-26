@@ -1,8 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
 import { CategoryInterface, Users } from "../../shared/interfaces";
-
-const API_BASE_URL = "http://localhost:3000/api";
+import { API_BASE_URL } from "../../config";
 
 const axiosConf = axios.create({
     baseURL: API_BASE_URL,
