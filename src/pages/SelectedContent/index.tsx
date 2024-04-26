@@ -1,11 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { MediaDVNContext } from "../../Context";
-import { useParams } from "react-router-dom";
-import { getContentID } from "../../service/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { deleteContent, getContentID } from "../../service/api";
 import { ContentInterface } from "../../shared/interfaces";
+import { ROLES } from "../../shared/enum/Roles";
 
 export const SelectedContent = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const context = useContext(MediaDVNContext);
     const [content, setContent] = useState<ContentInterface | null>(null);
 
@@ -18,7 +20,21 @@ export const SelectedContent = () => {
             }
         }
         getContent();
-    }, [])
+    }, []);
+
+    const administratorRole = () => context?.permissions === ROLES.Administrator;
+
+    const handlerDelete = async () => {
+        const deleteConfirm = confirm("¿Estás seguro de que deseas eliminar este contenido?");
+        if (deleteConfirm) {
+            const result = await deleteContent(id || "");
+            if (result.msg === 'Content deleted') {
+                navigate("/");
+            } else {
+                console.error(result)
+            }
+        }
+    }
 
     return (
         <>
@@ -43,7 +59,15 @@ export const SelectedContent = () => {
                 }
 
             </div>
-            <h5>Creditos: {content?.userID?.username}</h5>
+            <p>Creditos: {content?.userID?.username}</p>
+            {
+                administratorRole() ?
+                    <button type="button" onClick={handlerDelete}>
+                        Eliminar Contenido
+                    </button>
+                    :
+                    <></>
+            }
         </>
     )
 }

@@ -163,3 +163,12 @@ export const postContent = async (data: unknown) => {
         return catchReponse(error, "postContent");
     }
 }
+
+export const deleteContent = async (id: string) => {
+    try {
+        const res = await axiosContent.delete(`${API_BASE_URL}/content/${id}`);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "deleteContent");
+    }
+}

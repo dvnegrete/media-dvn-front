@@ -28,7 +28,7 @@ export const Dashboard = () => {
     const handlerToSee = async (id: string) => navigate("/contenido/" + id);
 
     return (
-        <section className="flex flex-wrap justify-evenly content-evenly" >
+        <section className="flex flex-wrap justify-evenly content-evenly w-5/6" >
             <h3>Contenidos Disponibles:</h3>
             <div>Busca un contenido:</div>
             {/* Implemetar componente buscador */}
