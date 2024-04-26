@@ -88,7 +88,7 @@ export const SideBar = () => {
                         {
                             creatorRole() ?
                                 <li>
-                                    <Link to="/nuevo-contenido"
+                                    <Link to="/contenido"
                                         className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                         <IconContent />
                                         <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>

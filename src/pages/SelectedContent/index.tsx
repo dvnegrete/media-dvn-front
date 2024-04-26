@@ -10,6 +10,8 @@ export const SelectedContent = () => {
     const navigate = useNavigate();
     const context = useContext(MediaDVNContext);
     const [content, setContent] = useState<ContentInterface | null>(null);
+    const [buttonDelete, setButtonDelete] = useState(false);
+    const [buttonEdit, setButtonEdit] = useState(false);
 
     useEffect(() => {
         const getContent = async () => {
@@ -22,7 +24,22 @@ export const SelectedContent = () => {
         getContent();
     }, []);
 
+    useEffect(() => {
+        setButtonDelete(administratorRole);
+        setButtonEdit(allowEditing);
+    }, [content])
+
     const administratorRole = () => context?.permissions === ROLES.Administrator;
+    const creatorRole = () => context?.permissions === ROLES.Creator;
+
+    const allowEditing = () => {
+        if (administratorRole()) {
+            return true;
+        } else if (creatorRole()) {
+            return content?.userID?._id === context?.username.userID;
+        }
+        return false;
+    }
 
     const handlerDelete = async () => {
         const deleteConfirm = confirm("¿Estás seguro de que deseas eliminar este contenido?");
@@ -34,6 +51,10 @@ export const SelectedContent = () => {
                 console.error(result)
             }
         }
+    }
+
+    const handlerEdit = () => {
+        console.log("PREPARANDO PANTALLA Para editar Content");
     }
 
     return (
@@ -62,21 +83,33 @@ export const SelectedContent = () => {
 
             </div>
             <p className="py-6 text-gray-400 text-blue-300 underline">
-                Publicado por 
+                Publicado por
                 <span className="text-xl mx-3">
                     {content?.userID?.username}
                 </span>
             </p>
-            {
-                administratorRole() ?
-                    <button type="button" onClick={handlerDelete}
-                    className="bg-slate-300 text-gray-900"
-                    >
-                        Eliminar Contenido
-                    </button>
-                    :
-                    <></>
-            }
+            <div className="flex justify-evenly">
+                {
+                    buttonEdit ?
+                        <button type="button" onClick={handlerEdit}
+                            className="bg-slate-300 text-gray-900"
+                        >
+                            Editar
+                        </button>
+                        :
+                        <></>
+                }
+                {
+                    buttonDelete ?
+                        <button type="button" onClick={handlerDelete}
+                            className="bg-slate-300 text-gray-900"
+                        >
+                            Eliminar Contenido
+                        </button>
+                        :
+                        <></>
+                }
+            </div>
         </section>
     )
 }

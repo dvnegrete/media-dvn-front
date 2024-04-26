@@ -1,18 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { CardThematic } from "../../components/CardThematic";
-import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
-import { getThemeAll } from "../../service/api";
-import { MediaDVNContext } from "../../Context";
-import { ROLES } from "../../shared/enum/Roles";
 import { useNavigate } from "react-router-dom";
+
+import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
+import { ROLES } from "../../shared/enum/Roles";
+
+import { MediaDVNContext } from "../../Context";
+import { getThemeAll } from "../../service/api";
+import { CardThematic } from "../../components/CardThematic";
 
 export const Content = () => {
     const context = useContext(MediaDVNContext);
     const navigate = useNavigate();
-    const [themes, setThemes] = useState<ThemeInterface[]>([]);
-
-    const administratorRole = () => context?.permissions === ROLES.Administrator;
-    const creatorRole = () => context?.permissions === ROLES.Creator;
+    const [themes, setThemes] = useState<ThemeInterface[]>([]);  
 
     useEffect(() => {
         const fetchThemes = async () => {
@@ -26,14 +25,20 @@ export const Content = () => {
         fetchThemes();
     }, []);
 
+    const allowWriting = () => {
+        const permission =  context?.permissions === ROLES.Administrator || context?.permissions === ROLES.Creator;
+        return permission;
+    }
+
     const handlerToCreate = (id: string) => {
         context?.setForCreateThematicID(id);
-        navigate("");
+        navigate("/nuevo-contenido");
     }
-    const handlerToSee = async (id: string) => navigate(`/contenido/${id}`);
 
     return (
-        <>
+        <section>
+            <h1>Tematicas Disponibles.</h1>
+            <h3>Seleciona una temática para crear tu contenido</h3>
             <div className="flex flex-wrap p-5 mb-4">
                 {
                     themes.map(theme => (
@@ -42,13 +47,12 @@ export const Content = () => {
                             key={theme._id}
                             name={theme.description}
                             description={theme.description}
-                            isCreator={administratorRole() || creatorRole()}
+                            isCreator={allowWriting()}
                             goToCreate={handlerToCreate}
-                            goToSee={handlerToSee}
                         />
                     ))
                 }
             </div>
-        </>
+        </section>
     )
 }

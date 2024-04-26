@@ -11,7 +11,6 @@ function App() {
   useEffect(() => {
     const isThereARegisteredUser = localStorage.getItem('user');
     if (isThereARegisteredUser) {
-      console.log("hay sesion activa");
       context?.setLogin(true);
     }
   }, []);

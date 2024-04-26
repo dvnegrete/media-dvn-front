@@ -3,6 +3,5 @@ export interface ThematicCard {
     name: string;
     description: string;
     isCreator: boolean;
-    goToSee: (value: string) => void;
     goToCreate: (value: string) => void;
 }

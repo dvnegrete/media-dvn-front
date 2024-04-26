@@ -20,7 +20,7 @@ export const AppRoute = () => {
     { path: "/tematicas", element: <AdminThemes /> },
     { path: "/administracion", element: <ProfileAdmin /> },
     { path: "/contenido", element: <Content /> },
-    { path: "/contenido/nuevo-contenido", element: <FormNewContent /> },
+    { path: "/nuevo-contenido", element: <FormNewContent /> },
     { path: "/contenido/:id", element: <SelectedContent /> },
 
   ]);
