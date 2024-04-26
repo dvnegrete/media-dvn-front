@@ -14,14 +14,14 @@ export const AppRoute = () => {
 
     { path: "/*", element: <Dashboard /> },
     { path: "/", element: <Dashboard /> },
-    { path: "/login", element: <Login /> },
-    { path: "/sign_up", element: <Register /> },
-    { path: "/nueva-categoria", element: <FormCategory /> },
-    { path: "/tematicas", element: <AdminThemes /> },
-    { path: "/administracion", element: <ProfileAdmin /> },
-    { path: "/contenido", element: <Content /> },
-    { path: "/nuevo-contenido", element: <FormNewContent /> },
-    { path: "/contenido/:id", element: <SelectedContent /> },
+    { path: "login", element: <Login /> },
+    { path: "sign_up", element: <Register /> },
+    { path: "nueva-categoria", element: <FormCategory /> },
+    { path: "tematicas", element: <AdminThemes /> },
+    { path: "administracion", element: <ProfileAdmin /> },
+    { path: "contenido", element: <Content /> },
+    { path: "nuevo-contenido", element: <FormNewContent /> },
+    { path: "contenido/:id", element: <SelectedContent /> },
 
   ]);
   return router;
