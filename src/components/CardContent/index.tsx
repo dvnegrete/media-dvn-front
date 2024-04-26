@@ -3,7 +3,7 @@ import { CardContentProp } from "../../shared/interfaces";
 export const CardContent = ({ _id, title, goToSee }:CardContentProp) => {
     const handlerSeeContent = () => goToSee(_id);
     return (
-        <div className="max-w-sm min-w-3.5 h-fit rounded overflow-hidden shadow-lg dark:bg-gray-800 m-6">
+        <div className="w-80 h-fit rounded-md overflow-hidden shadow-lg dark:bg-gray-800 m-6">
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{title}</div>
             </div>

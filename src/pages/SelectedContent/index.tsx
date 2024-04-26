@@ -37,37 +37,46 @@ export const SelectedContent = () => {
     }
 
     return (
-        <>
-            <h3>{content?.title}</h3>
-            <div>
+        <section>
+            <h3 className="text-3xl p-4">{content?.title}</h3>
+            <div className="py-5 px-2 text-balance">
                 {content?.content}
             </div>
 
             {/* Generar nuevo componente para mostrar el array de "media" */}
-            <div>
+            <div className="max-h-64 py-3">
                 {
                     content?.media?.map(item => (
-                        <img src={item} />
+                        <img className="max-h-56"
+                            src={item}
+                        />
                     ))
 
                 }
-                {
+                {/* {
                     <video src="" />
                 }
                 {
                     <a href={"pdf"} download={"nombre de archivo.pdf"}></a>
-                }
+                } */}
 
             </div>
-            <p>Creditos: {content?.userID?.username}</p>
+            <p className="py-6 text-gray-400 text-blue-300 underline">
+                Publicado por 
+                <span className="text-xl mx-3">
+                    {content?.userID?.username}
+                </span>
+            </p>
             {
                 administratorRole() ?
-                    <button type="button" onClick={handlerDelete}>
+                    <button type="button" onClick={handlerDelete}
+                    className="bg-slate-300 text-gray-900"
+                    >
                         Eliminar Contenido
                     </button>
                     :
                     <></>
             }
-        </>
+        </section>
     )
 }
