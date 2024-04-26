@@ -1,34 +1,54 @@
-import { useContext } from "react";
-import { ContentContext } from "../../Context/ContentContext";
+import { useContext, useEffect, useState } from "react";
+import { CardThematic } from "../../components/CardThematic";
+import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
+import { getThemeAll } from "../../service/api";
+import { MediaDVNContext } from "../../Context";
+import { ROLES } from "../../shared/enum/Roles";
+import { useNavigate } from "react-router-dom";
 
 export const Content = () => {
-    const contextContent = useContext(ContentContext);
+    const context = useContext(MediaDVNContext);
+    const navigate = useNavigate();
+    const [themes, setThemes] = useState<ThemeInterface[]>([]);
+
+    const administratorRole = () => context?.permissions === ROLES.Administrator;
+    const creatorRole = () => context?.permissions === ROLES.Creator;
+
+    useEffect(() => {
+        const fetchThemes = async () => {
+            try {
+                const ThemeData = await getThemeAll();
+                setThemes(ThemeData);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchThemes();
+    }, []);
+
+    const handlerToCreate = (id: string) => {
+        context?.setForCreateThematicID(id);
+        navigate("");
+    }
+    const handlerToSee = async (id: string) => navigate(`/contenido/${id}`);
 
     return (
         <>
-            <h3>{contextContent?.selectedContent?.title}</h3>
-            <div>
-                {contextContent?.selectedContent?.content}
-            </div>
-
-                {/* Generar nuevo componente para mostrar el array de "media" */}
-            <div>
+            <div className="flex flex-wrap p-5 mb-4">
                 {
-                    contextContent?.selectedContent?.media?.map(item => (
-                        <img src={item} />
+                    themes.map(theme => (
+                        <CardThematic
+                            _id={theme._id || theme.name}
+                            key={theme._id}
+                            name={theme.description}
+                            description={theme.description}
+                            isCreator={administratorRole() || creatorRole()}
+                            goToCreate={handlerToCreate}
+                            goToSee={handlerToSee}
+                        />
                     ))
-
                 }
-                {
-                    <video src="" />
-                }
-                {
-                    <a href={"pdf"} download={"nombre de archivo.pdf"}></a>
-                }
-
             </div>
-
-            <h5>Creditos: {contextContent?.selectedContent?.userID?.username}</h5>
         </>
     )
 }

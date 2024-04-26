@@ -146,7 +146,6 @@ export const FormNewContent = () => {
             >
                 Publicar mi contenido
             </button>
-            <p>Tu contenido se publicara con tu nombre de usuario: {context?.username.username}</p>
         </form>
     )
 }

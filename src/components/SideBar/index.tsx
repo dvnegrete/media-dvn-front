@@ -1,3 +1,9 @@
+import { useContext } from "react"
+import { Link } from "react-router-dom"
+
+import { ROLES } from "../../shared/enum/Roles"
+import { MediaDVNContext } from "../../Context"
+
 import { IconCategory } from "../Icons/IconCategory"
 import { IconHome } from "../Icons/IconHome"
 import { IconMenu } from "../Icons/IconMenu"
@@ -6,27 +12,15 @@ import { IconSignIn } from "../Icons/IconSignIn"
 import { IconSignUp } from "../Icons/IconSignUp"
 import { IconUsers } from "../Icons/IconUsers"
 import { IconReadContent } from "../Icons/IconReadContent"
-import { Link, useNavigate } from "react-router-dom"
 import { IconSignOut } from "../Icons/IconSignOut"
-import { ROLES } from "../../shared/enum/Roles"
-import { useContext } from "react"
-import { MediaDVNContext } from "../../Context"
+import { IconContent } from "../Icons/IconContent"
 
 export const SideBar = () => {
-    const navigate = useNavigate();
 
     const context = useContext(MediaDVNContext);
 
-    const handlerLogOut = () => {
-        context?.setPermissions("");
-        localStorage.removeItem('user');
-        localStorage.removeItem('ROLES');
-        context?.setLogin(false);
-        navigate("/login");
-    }
-
     const administratorRole = () => context?.permissions === ROLES.Administrator;
-    // const creatorRole = () => context?.permissions === ROLES.Creator;
+    const creatorRole = () => context?.permissions === ROLES.Creator;
     // const lectorRole = () => context?.permissions === ROLES.Reader;
     const isLoggedIn = () => context?.login;
 
@@ -38,8 +32,8 @@ export const SideBar = () => {
                 <IconMenu />
             </button>
 
-            <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-                <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+            <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 dark:bg-gray-800" aria-label="Sidebar">
+                <div className="h-5/6 px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <Link to="/"
                         className="flex items-center ps-2.5 mb-5">
                         <IconHome />
@@ -50,7 +44,7 @@ export const SideBar = () => {
                     </Link>
                     <ul className="space-y-2 font-medium">
                         <li>
-                            <Link to="/dashboard"
+                            <Link to="/"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                 <IconReadContent />
                                 <span className="flex-1 ms-3 whitespace-nowrap">Contenidos</span>
@@ -74,6 +68,13 @@ export const SideBar = () => {
                                         </Link>
                                     </li>
                                     <li>
+                                        <Link to="/contenido"
+                                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                            <IconContent />
+                                            <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>
+                                        </Link>
+                                    </li>
+                                    <li>
                                         <Link to="/administracion"
                                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                             <IconUsers />
@@ -85,19 +86,16 @@ export const SideBar = () => {
                                 <></>
                         }
                         {
-                            // creatorRole() ?
-                            //     <>
-                            //         <li>
-                            //             <Link to="/nuevo-contenido"
-                            //                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            //                 <IconContent />
-                            //                 <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>
-                            //             </Link>
-                            //         </li>
-
-                            //     </>
-                            //     :
-                            //     <></>
+                            creatorRole() ?
+                                <li>
+                                    <Link to="/nuevo-contenido"
+                                        className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                        <IconContent />
+                                        <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>
+                                    </Link>
+                                </li>
+                                :
+                                <></>
                         }
 
                         {
@@ -105,7 +103,7 @@ export const SideBar = () => {
                                 <>
 
                                     <li>
-                                        <div onClick={handlerLogOut}
+                                        <div onClick={() => context?.signOff()}
                                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                                             <IconSignOut />
                                             <span className="flex-1 ms-3 whitespace-nowrap">Cerrar Sesión</span>
@@ -129,14 +127,17 @@ export const SideBar = () => {
                                         </Link>
                                     </li>
                                 </>
-
                         }
-
-
-
-
                     </ul>
                 </div>
+                <div className="h-1/6 flex justify-center items-end bottom pb-3">
+                    {
+                        context?.username.username !== "" ?
+                            <p>Bienvenido {context?.username.username}</p>
+                            : <></>
+                    }
+                </div>
+
             </aside>
         </>
     )
