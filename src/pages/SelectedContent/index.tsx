@@ -82,9 +82,9 @@ export const SelectedContent = () => {
                 } */}
 
             </div>
-            <p className="py-6 text-gray-400 text-blue-300 underline">
+            <p className="py-6 text-gray-400 text-blue-300">
                 Publicado por
-                <span className="text-xl mx-3">
+                <span className="mx-3 uppercase text-cyan-400">
                     {content?.userID?.username}
                 </span>
             </p>
