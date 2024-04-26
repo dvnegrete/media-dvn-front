@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError } from "axios";
-import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
-import { CategoryInterface, Users } from "../../shared/interfaces";
+import { Users } from "../../shared/interfaces";
 import { API_BASE_URL } from "../../config";
 
 const axiosConf = axios.create({
@@ -100,7 +100,7 @@ export const getCategory = async () => {
     }
 }
 
-export const postCategory = async (data: CategoryInterface) => {
+export const postCategory = async (data: any) => {
     try {
         const res = await axiosConf.post(`${API_BASE_URL}/categories`, { ...data });
         return res.data;
@@ -109,7 +109,7 @@ export const postCategory = async (data: CategoryInterface) => {
     }
 }
 
-export const postTheme = async (data: ThemeInterface) => {
+export const postTheme = async (data: any) => {
     try {
         const res = await axiosConf.post(`${API_BASE_URL}/themes`, { ...data });
         return res.data;

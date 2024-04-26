@@ -3,7 +3,6 @@ import { CustomInput } from "../../components/CustomInput";
 import { ListTypeAllowed } from "../../components/ListTypeAllowed";
 import { getCategory, postTheme } from "../../service/api";
 import { CategoryInterface } from "../../shared/interfaces";
-import { ThemeInterface } from "../../shared/interfaces/Theme.Interface";
 import { useNavigate } from "react-router-dom";
 
 export const FormNewTheme = () => {
@@ -64,7 +63,7 @@ export const FormNewTheme = () => {
 
     const sendCategory = async () => {
         if (validateData()) {
-            const sendObj: ThemeInterface = {
+            const sendObj = {
                 name: inputName,
                 description: inputDescription,
                 categories: categoryAllowed

@@ -4,7 +4,7 @@ export interface CategoryInterface {
     description: string;
     image: string;
     allowedFileTypes: string[];
-    isCreator: boolean;
+    isCreator?: boolean;
     goToSee: (value: string) => void;
     goToCreate: (value: string) => void;
 }

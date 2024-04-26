@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { ListFilesAllowed } from "../../shared/fileCategories";
 import { ListTypeAllowed } from "../../components/ListTypeAllowed";
 import { CustomInput } from "../../components/CustomInput";
-import { CategoryInterface } from "../../shared/interfaces";
 import { postCategory } from "../../service/api";
 
 export const FormCategory = () => {
@@ -56,7 +55,7 @@ export const FormCategory = () => {
 
     const sendCategory = async () => {
         if (validateData()) {
-            const sendObj:CategoryInterface = {
+            const sendObj = {
                 name: inputName,
                 description: inputDescription,
                 image: inputUrl,
