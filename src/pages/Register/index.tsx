@@ -1,7 +1,8 @@
-import { useContext, useRef, useState } from "react"
+import { ChangeEvent, useContext, useRef, useState } from "react"
 import { postUsers } from "../../service/api";
 import { Link, useNavigate } from "react-router-dom";
 import { MediaDVNContext } from "../../Context";
+import { ROLES } from "../../shared/enum/Roles";
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ export const Register = () => {
 
     const [message, setMessage] = useState("");
     const [showMessage, setShowMessage] = useState(false);
+    const [role, setRole] = useState(ROLES.Reader);
 
     const validationBackend = (res: unknown) => {
         setShowMessage(true);
@@ -30,11 +32,18 @@ export const Register = () => {
         }
     }
 
+    const handlerSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const selectOption = event.target.value;
+        if (selectOption === ROLES.Reader || selectOption === ROLES.Creator) {
+            setRole(selectOption);
+        }
+    }
+
     const sendRegistration = async () => {
         if (refEmail.current && refUsername.current) {
             const username = refUsername.current.value.trim();
             const email = refEmail.current.value.trim();
-            const dataSend = { username, email };
+            const dataSend = { username, email, role };
             const res = await postUsers(dataSend);
             validationBackend(res.msg);
             if (res._id) {
@@ -68,7 +77,7 @@ export const Register = () => {
                                 <input type="text" name="username" placeholder="usuario" required ref={refUsername}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
-                            <div className="pb-8">
+                            <div className="">
                                 <label htmlFor="email"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     email
@@ -76,6 +85,17 @@ export const Register = () => {
                                 <input type="email" name="email" placeholder="mail@mail.com" required ref={refEmail}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 />
+                            </div>
+
+                            <div className="w-4/5 pb-8 mb-6 md:mb-0">
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="category-list">
+                                    <p>Tipo de registro</p>
+                                </label>
+                                <select onChange={handlerSelectChange}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value={ROLES.Reader} defaultChecked>Lector</option>
+                                    <option value={ROLES.Creator}>Creador de contenido</option>
+                                </select>
                             </div>
 
                             {
