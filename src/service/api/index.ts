@@ -154,6 +154,15 @@ export const getContentID = async (id:string) => {
     }
 }
 
+export const getContentSearch = async (phrase:string) => {
+    try {
+        const res = await axiosContent.get(`${API_BASE_URL}/content?search=${phrase}`);
+        return res.data;
+    } catch (error) {
+        return catchReponse(error, "getContentAll");
+    }
+}
+
 export const postContent = async (data: unknown) => {
     try {
         const res = await axiosContent.postForm(`${API_BASE_URL}/content`, data);
