@@ -7,6 +7,7 @@ import { getContentAll } from "../../service/api";
 import { CardContent } from "../../components/CardContent";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { SearchEngine } from "../../components/SearchEngine";
+import { ButtonLoading } from "../../components/ButtonLoading";
 
 export const Dashboard = () => {
     const navigate = useNavigate();
@@ -39,11 +40,14 @@ export const Dashboard = () => {
         <section className="min-w-full" >
             <h3 className="text-3xl mb-8">Contenidos Disponibles:</h3>
             <SearchEngine contentSearch={handlerSearchEngine} />
-            <p className="pt-4">Contenidos encontrados: {counterContents}</p>
+            {
+                loading &&
+                <p className="pt-4">Contenidos encontrados: {counterContents}</p>
+            }
             <div className="">
                 {
 
-                    !loading ?
+                    loading ?
                         <div className="flex flex-wrap justify-evenly content-evenly p-5 mb-4">
                             {
                                 contents.map(content => (
@@ -57,7 +61,10 @@ export const Dashboard = () => {
                             }
                         </div>
                         :
-                        <SkeletonCard />
+                        <div className="max-h-full">
+                            <ButtonLoading />
+                            <SkeletonCard />
+                        </div>
                 }
             </div>
         </section>
