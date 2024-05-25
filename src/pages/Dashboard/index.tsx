@@ -41,13 +41,13 @@ export const Dashboard = () => {
             <h3 className="text-3xl mb-8">Contenidos Disponibles:</h3>
             <SearchEngine contentSearch={handlerSearchEngine} />
             {
-                loading &&
+                !loading &&
                 <p className="pt-4">Contenidos encontrados: {counterContents}</p>
             }
             <div className="">
                 {
 
-                    loading ?
+                    !loading ?
                         <div className="flex flex-wrap justify-evenly content-evenly p-5 mb-4">
                             {
                                 contents.map(content => (
