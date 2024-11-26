@@ -1,5 +1,5 @@
-import { useContext, useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useEffect, useState } from "react"
+import { Link, useLocation } from "react-router-dom"
 
 import { ROLES } from "../../shared/enum/Roles"
 import { MediaDVNContext } from "../../Context"
@@ -18,9 +18,17 @@ import { IconContent } from "../Icons"
 export const SideBar = () => {
 
     const context = useContext(MediaDVNContext);
-    const [isNavOpen, setIsNavOpen] = useState(false)
+    const [isNavOpen, setIsNavOpen] = useState(false);
+    
+    const { state } = useLocation();
+    useEffect(()=>{
+        console.log(state);        
+    }, [state])
 
-    const menu = () => setIsNavOpen((state) => !state);
+    const menu = () => {
+        setIsNavOpen((state) => !state)
+        console.log(state);        
+    };
 
     const administratorRole = () => context?.permissions === ROLES.Administrator;
     const creatorRole = () => context?.permissions === ROLES.Creator;
@@ -50,59 +58,55 @@ export const SideBar = () => {
                     </Link>
                     <div className="flex flex-col h-5/6 justify-between">
                         <ul className="space-y-2 font-medium">
-                            <li>
-                                <Link to="/"
+                            <li onClick={()=>setIsNavOpen(false)}>
+                                <Link to="/" state={{ some: "content" }}
                                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <IconReadContent />
                                     <span className="flex-1 ms-3 whitespace-nowrap">Contenidos</span>
                                 </Link>
                             </li>
                             {
-                                administratorRole() ?
+                                administratorRole() &&
                                     <>
                                         <li>
-                                            <Link to="/tematicas"
+                                            <Link to="/tematicas" state={{ some: "tematicas" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconTheme />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Administrar Temáticas</span>
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/nueva-categoria"
+                                            <Link to="/nueva-categoria" state={{ some: "Crear Categoria" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconCategory />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Crear Categoria</span>
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/contenido"
+                                            <Link to="/contenido" state={{ some: "Crear Contenido" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconContent />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/administracion"
+                                            <Link to="/administracion" state={{ some: "Usuarios" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconUsers />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Usuarios</span>
                                             </Link>
                                         </li>
                                     </>
-                                    :
-                                    <></>
                             }
                             {
-                                creatorRole() ?
+                                creatorRole() &&
                                     <li>
-                                        <Link to="/contenido"
+                                        <Link to="/contenido" state={{ some: "Crear Contenido" }}
                                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                             <IconContent />
                                             <span className="flex-1 ms-3 whitespace-nowrap">Crear Contenido</span>
                                         </Link>
                                     </li>
-                                    :
-                                    <></>
                             }
 
                         </ul>
@@ -129,14 +133,14 @@ export const SideBar = () => {
                                     :
                                     <>
                                         <li>
-                                            <Link to="login"
+                                            <Link to="login" state={{ some: "Iniciar Sesión" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconSignIn />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Iniciar Sesión</span>
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="sign_up"
+                                            <Link to="sign_up" state={{ some: "Registrarme" }}
                                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                                 <IconSignUp />
                                                 <span className="flex-1 ms-3 whitespace-nowrap">Registrarme</span>
